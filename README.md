@@ -23,8 +23,22 @@ specs/
 ├── 00.base.md                                无框架依赖的基础规范（所有项目必读）
 ├── 01.shadcn-ui+tailwindcss+ant-design.md    shadcn/ui + Tailwind v4 + antd 6 混合栈
 └── …                                        后续框架协议按 02/03/… 递增
+scripts/lint-ui.mjs                          可执行自检（零依赖，见 00.base.md §14）
 SKILL.md                                      Agent 入口：加载顺序、工作流、红线
 ```
+
+## 可执行自检
+
+`scripts/lint-ui.mjs`（零依赖，Node ≥ 18）把 `00.base.md §13` 里可机械判定的 4 条做成检查：
+
+```bash
+node scripts/lint-ui.mjs --root ../my-app          # 检查别的项目
+node scripts/lint-ui.mjs --update-baseline         # 债务减少后收紧基线
+```
+
+硬规则（裸 `font-size`、<9px、内联 `fontSize`）发现即失败；
+棘轮规则（元素选择器、`!important`、圆角档位、硬编码色值）记进 `.ui-lint-baseline.json`，
+只许减不许增。老项目不必一次清零，但数字不应回涨。
 
 ## 规范清单
 
