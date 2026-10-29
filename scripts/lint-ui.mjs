@@ -127,7 +127,11 @@ const now = {
   radiusKinds: acc.radius.size,
   hexColors: acc.hex,
 };
-const baseline = existsSync(opts.baseline) ? JSON.parse(readFileSync(opts.baseline, "utf8")) : { ...now };
+const hasBaseline = existsSync(opts.baseline);
+const baseline = hasBaseline ? JSON.parse(readFileSync(opts.baseline, "utf8")) : { ...now };
+if (!hasBaseline) {
+  console.warn(`提示：未找到基线 ${opts.baseline}，本次按当前状态视为基线；提交该文件后棘轮规则才生效。`);
+}
 
 if (opts.updateBaseline) {
   writeFileSync(opts.baseline, JSON.stringify({ ...now, updatedAt: new Date().toISOString().slice(0, 10) }, null, 2) + "\n");
